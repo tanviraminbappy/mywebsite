@@ -1,0 +1,22 @@
+{% extends "mycoolwebsite/base.html" %}
+
+{% block content %}
+<div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                        {% if sent %}
+                            <h1>Email successfully sent</h1>
+                            <p>"{{post.title}}" was sent by email !</p>
+
+                        {% else %}
+                                <h1>Share "{{post.title}}" by email</h1>
+                                <form action="." method="post">
+                                    {{form.as_p}}
+                                    {% csrf_token %}
+                                    <input type="submit" value="Send email">
+                                </form>
+                        {% endif%}
+          </div>
+       </div>
+</div>
+{% endblock %}

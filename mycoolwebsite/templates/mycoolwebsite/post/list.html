@@ -1,0 +1,50 @@
+{% extends "mycoolwebsite/base.html" %}
+
+ {% block content %}
+     <header class="intro-header" style="background-image: url('../static/img/home-bg.jpg')">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+
+                        <h1>Welcome to Tanvir's Blog</h1>
+
+                        <hr class="small">
+                        <span class="subheading">I'm a Software Engineer</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <div class="row">
+
+
+            <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                {% for post in posts %}
+                <div class="post-preview">
+
+                    <a href="{{post.get_absolute_url }}">
+                        <h2 class="post-title">
+                            {{post.title}}
+                        </h2>
+
+                    </a>
+                    <p class="post-meta">Posted by <a href="#">{{post.author}}</a> {{ post.published}}</p>
+                     {{ post.body|truncatewords:30|linebreaks }}
+                    <div class="tags">
+
+                       <span class="label label-default">{{ post.tags.all|join:" , " }}</span>
+
+                    </div>
+                </div>
+                <hr>
+                {% endfor %}
+                <!-- Pager -->
+                {% include "mycoolwebsite/pagination.html" with page=posts %}
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

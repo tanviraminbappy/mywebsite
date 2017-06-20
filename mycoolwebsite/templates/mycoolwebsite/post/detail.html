@@ -1,0 +1,93 @@
+{% extends "mycoolwebsite/base.html" %}
+
+
+
+ {% block content %}
+
+
+     <header class="intro-header" style="background-color: gray">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 col-lg-offset-2 col-md-10 col-md-offset-1">
+                    <div class="site-heading">
+
+                        <h1>{{post.title}}</h1>
+
+                        <hr class="small">
+                        <span class="subheading">Posted by <a href="#">{{post.author}}</a> on {{post.published}}</span>                     </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+        <div class="container">
+            <div class="row">
+                                   <p>{{post.body|linebreaks}}</p>
+                    <a href="{% url "mycoolwebsite:post_share" post.id %}" type="button" class="btn btn-primary btn-lg"   > share it !</a>
+                    <hr></hr>
+
+                    {% with comments.count as total_comments %}
+                        <h2>{{ total_comments}} comment{{ total_comments|pluralize }}</h2>
+                    {% endwith %}
+
+                    {% for comment in comments %}
+                    <div class="row">
+                        <div class="col-sm-1">
+                            <div class="thumbnail">
+                                <img class="img-responsive user-photo"
+                                     src="https://ssl.gstatic.com/accounts/ui/avatar_2x.png">
+                            </div><!-- /thumbnail -->
+                        </div><!-- /col-sm-1 -->
+
+                        <div class="col-sm-11">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <strong>{{ comment.name}}</strong> <span class="text-muted">commented {{comment.created}}</span>
+                                </div>
+                                <div class="panel-body">
+                                    {{ comment.body|linebreaks }}
+                                </div><!-- /panel-body -->
+                            </div><!-- /panel panel-default -->
+                        </div><!-- /col-sm-5 -->
+                    </div>
+
+                    {% empty %}
+
+                    {% endfor%}
+
+                    {% if new_comment %}
+                        <h2>Your comment has been added !</h2>
+                    {% else %}
+                        <h2>Add new comment </h2>
+                        <form action="." method="post">
+                            {{comment_form.as_p}}
+                            {% csrf_token %}
+                            <input class="btn btn-primary " type="submit" value="Add comment">
+                        </form>
+                    {% endif%}
+                    <hr></hr>
+                    <h2>Similar articles </h2>
+                {% for post in similar_posts %}
+                 <div class="row">
+
+                    <div class="col-xs-18 col-sm-6 col-md-3">
+                      <div class="thumbnail">
+                        <img src="http://placehold.it/500x300" alt="">
+                          <div class="caption">
+                            <a href="{{ post.get_absolute_url }}">{{ post.title}}</a>
+                            <p>{{ post.body|truncatewords:30|linebreaks }} </p>
+                        </div>
+                      </div>
+                    </div>
+                {% empty %}
+                      <p>No similar posts available ! </p>
+                     {% endfor %}
+                </div>
+            </div>
+        </div>
+<!-- Button trigger modal -->
+
+
+
+{% endblock %}
+
